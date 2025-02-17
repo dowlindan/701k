@@ -1,18 +1,14 @@
-from PyQt6.QtWidgets import QApplication, QLineEdit, QWidget, QVBoxLayout, QPushButton
-from PyQt6.QtGui import QIntValidator
+import sys
+from PySide6.QtGui import QGuiApplication
+from PySide6.QtQml import QQmlApplicationEngine
 
-app = QApplication([])
-
-window = QWidget()
-layout = QVBoxLayout()
-
-line_edit = QLineEdit()
-line_edit.setValidator(QIntValidator(0, 100))  # Only allows integers between 0 and 100
-layout.addWidget(line_edit)
-
-button = QPushButton("Submit")
-layout.addWidget(button)
-
-window.setLayout(layout)
-window.show()
-app.exec()
+if __name__ == "__main__":
+    app = QGuiApplication(sys.argv)
+    engine = QQmlApplicationEngine()
+    engine.addImportPath(sys.path[0])
+    engine.loadFromModule("qml", "Main")
+    if not engine.rootObjects():
+        sys.exit(-1)
+    exit_code = app.exec()
+    del engine
+    sys.exit(exit_code)
